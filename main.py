@@ -1,6 +1,7 @@
 from typing import Optional
-from fastapi import FastAPI, Body, Query, Path, status
+from fastapi import FastAPI, Body, Query, Path, status, Header, Cookie
 from fastapi.param_functions import Form
+from pydantic.networks import EmailStr
 from models import UserBase, User, UserCreated, LoginResponse
 
 app = FastAPI()
@@ -38,3 +39,16 @@ def login(
     password: str = Form(...),
 ):
     return LoginResponse(username=username)
+
+
+# Cookies & Headers
+
+@app.post("/contact", status_code=status.HTTP_200_OK)
+def contact(
+    name: str = Form(..., min_length=3, max_length=20),
+    email: EmailStr = Form(...),
+    message: str = Form(...,min_lenght=20, max_length=200),
+    user_agent: str = Header(None),
+    ads: Optional[str] = Cookie(None),
+):
+    return user_agent
