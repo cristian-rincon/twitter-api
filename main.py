@@ -1,45 +1,28 @@
 from typing import Optional
-from fastapi import FastAPI, Body, Query, Path
-from models import UserBase
+from fastapi import FastAPI, Body, Query, Path, status
+from models import UserBase, User, UserCreated
 
 app = FastAPI()
 
 
-@app.get("/")
+@app.get("/", status_code=status.HTTP_200_OK)
 def home():
     return {"message": "Hello World"}
 
 
-@app.post("/user")
-def create_user(user: UserBase = Body(...)):
+@app.post("/user", response_model=UserCreated, status_code=status.HTTP_201_CREATED)
+def create_user(user: User = Body(...)):
     return user
 
 
-@app.get("/user")
+@app.get("/user/{user_id}", status_code=status.HTTP_200_OK)
 def get_user(
-    name: Optional[str] = Query(
-        None,
-        min_length=3,
-        max_length=50,
-        title="Name",
-        description="Name of the user",
-        example="John Doe",
-    ),
-    age: Optional[int] = Query(
-        ..., gt=0, lt=100, title="User's Age", description="Age of the user", example=42
-    ),
-):
-    return {"name": name, "age": age}
-
-
-@app.get("/user/{user_id}")
-def get_user_by_id(
     user_id: int = Path(..., gt=0, title="User ID", description="ID of the user")
 ):
     return {"user_id": user_id}
 
 
-@app.put("/user/{user_id}")
+@app.put("/user/{user_id}", status_code=status.HTTP_200_OK)
 def update_user(
     user_id: int = Path(
         ..., gt=0, title="User ID", description="ID of the user", example=1
