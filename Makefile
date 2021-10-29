@@ -17,7 +17,7 @@ help:
 # COMMON TASKS 															      #
 ###############################################################################
 
-commit:
+commit: ## commit all changes
 	git add .
 	git commit
 	git push origin $(CURRENT_BRANCH)
