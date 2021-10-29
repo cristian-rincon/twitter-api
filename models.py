@@ -21,6 +21,7 @@ class UserBase(BaseModel):
     is_active: bool = Field(True)
     is_superuser: bool = Field(False)
     username: str = Field(..., min_length=2, max_length=20)
+    
 
     class Config:
         schema_extra = {
@@ -33,5 +34,12 @@ class UserBase(BaseModel):
                 "is_active": True,
                 "is_superuser": False,
                 "username": "johndoe",
+                "password": "password",
             }
         }
+
+class User(UserBase):
+    password: str = Field(..., min_length=8, max_length=20)
+
+class UserCreated(UserBase):...
+    
