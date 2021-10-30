@@ -37,5 +37,13 @@ class User(UserBase):
     birth_date: Optional[date] = Field(None)
 
 
-class UserLogin(UserBase):
-    password: str = Field(..., min_length=8, max_length=20)
+class PasswordMixin(BaseModel):
+    password: str = Field(..., min_length=8, max_length=128)
+
+
+class UserLogin(UserBase, PasswordMixin):
+    ...
+
+
+class UserRegister(User, PasswordMixin):
+    ...

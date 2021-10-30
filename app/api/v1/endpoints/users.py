@@ -1,36 +1,15 @@
+import json
 from typing import List
 
 from fastapi import APIRouter, Body, HTTPException, Path
 from starlette import status
 
-from app.api.v1.models.users import User, UserBase
+from app.api.v1.models.users import User, UserBase, UserRegister
 
 router = APIRouter(
     prefix="/users", tags=["users"], responses={404: {"description": "Not found"}}
 )
 
-mock_users = {
-    1: User(
-        user_id="f5f8c9c0-e8e3-4e7b-b8e0-f9b8c8f9f9f9",
-        username="johndoe",
-        email="johndoe@example.com",
-        first_name="John",
-        last_name="Doe",
-        is_active=True,
-        is_superuser=False,
-        password="hunter21",
-    ),
-    2: User(
-        user_id="f5f8c9c0-e8e3-4e7b-b8e0-f9b8c8f9f9f8",
-        username="janesmith",
-        email="janesmith@example.com",
-        first_name="Jane",
-        last_name="Smith",
-        is_active=False,
-        is_superuser=False,
-        password="abcdefga",
-    ),
-}
 
 # Signup & Login
 
@@ -41,8 +20,17 @@ mock_users = {
     status_code=status.HTTP_201_CREATED,
     summary="Sign up",
 )
-def sign_up(user: User = Body(...)):
-    ...
+def sign_up(user: UserRegister = Body(...)):
+    with open("app/mocks/users.json", "r+", encoding="utf-8") as f:
+        result = json.loads(f.read())
+        new_user = user.dict()
+        new_user["user_id"] = str(new_user["user_id"])
+        new_user["birth_date"] = str(new_user["birth_date"])
+        result.append(new_user)
+        f.seek(0)
+        f.write(json.dumps(result))
+        return new_user
+
 
 
 @router.post(
@@ -71,23 +59,7 @@ def get_users():
 def get_user(
     user_id: int = Path(..., gt=0, title="User ID", description="ID of the user")
 ):
-    """Get a user.
-
-    Parameters
-    ----------
-    -   user_id : int
-
-    Returns
-    -------
-    -   User
-
-    """
-
-    if user_id not in mock_users:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Userid not found"
-        )
-    return {"data": mock_users[user_id]}
+    ...
 
 
 @router.delete(
