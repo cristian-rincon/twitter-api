@@ -1,6 +1,7 @@
 from enum import Enum
 from typing import Optional
-from pydantic import BaseModel, Field, EmailStr
+
+from pydantic import BaseModel, Field
 
 
 class HairColor(str, Enum):
@@ -21,7 +22,6 @@ class UserBase(BaseModel):
     is_active: bool = Field(True)
     is_superuser: bool = Field(False)
     username: str = Field(..., min_length=2, max_length=20)
-    
 
     class Config:
         schema_extra = {
@@ -38,12 +38,21 @@ class UserBase(BaseModel):
             }
         }
 
+
 class User(UserBase):
     password: str = Field(..., min_length=8, max_length=20)
 
-class UserCreated(UserBase):...
-    
+
+class UserCreated(UserBase):
+    ...
+
 
 class LoginResponse(BaseModel):
-    username: str = Field(..., min_length=2, max_length=20, description="Username of the user", example="johndoe")
+    username: str = Field(
+        ...,
+        min_length=2,
+        max_length=20,
+        description="Username of the user",
+        example="johndoe",
+    )
     message: str = Field(default="You have successfully logged in")
