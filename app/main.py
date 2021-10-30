@@ -5,7 +5,8 @@ from fastapi.datastructures import UploadFile
 from fastapi.param_functions import Form
 from pydantic.networks import EmailStr
 
-from models import LoginResponse, User, UserBase, UserCreated
+from app.models.user import User, UserBase, UserCreated
+from app.models.auth import LoginResponse
 
 app = FastAPI()
 
