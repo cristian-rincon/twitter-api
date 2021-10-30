@@ -4,7 +4,7 @@ from uuid import UUID
 from pydantic import BaseModel, Field
 from uuid import UUID
 
-from app.models.user import User
+from app.models.users import User
 
 
 class Tweet(BaseModel):
