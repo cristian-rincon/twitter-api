@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, RedirectResponse, status
+from fastapi import APIRouter, status
 
 from app.api.v1.models.tweets import Tweet
 
@@ -15,10 +15,44 @@ router = APIRouter(
     status_code=status.HTTP_200_OK,
     summary="Get all tweets",
 )
-def home():
+def get_tweets():
+    ...
 
-    """Redirect to the docs page.
 
-    Returns RedirectResponse
-    """
-    return RedirectResponse("/docs")
+@router.get(
+    "/{tweet_id}",
+    response_model=Tweet,
+    status_code=status.HTTP_200_OK,
+    summary="Get a tweet",
+)
+def get_tweet():
+    ...
+
+
+@router.post(
+    "/",
+    response_model=Tweet,
+    status_code=status.HTTP_201_CREATED,
+    summary="Create a tweet",
+)
+def create_tweet():
+    ...
+
+
+@router.put(
+    "/{tweet_id}",
+    response_model=Tweet,
+    status_code=status.HTTP_200_OK,
+    summary="Update a tweet",
+)
+def update_tweet():
+    ...
+
+
+@router.delete(
+    "/{tweet_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Delete a tweet",
+)
+def delete_tweet():
+    ...
