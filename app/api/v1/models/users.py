@@ -1,7 +1,7 @@
-from enum import Enum
-from typing import Optional
 from datetime import date
+from typing import Optional
 from uuid import UUID
+
 from pydantic import BaseModel, Field
 from pydantic.networks import EmailStr
 

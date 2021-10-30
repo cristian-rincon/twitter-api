@@ -1,8 +1,9 @@
 from typing import List
+
 from fastapi import APIRouter, Body, HTTPException, Path
 from starlette import status
 
-from app.models.users import User, UserBase
+from app.api.v1.models.users import User, UserBase
 
 router = APIRouter(
     prefix="/users", tags=["users"], responses={404: {"description": "Not found"}}

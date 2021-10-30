@@ -1,10 +1,10 @@
 from datetime import datetime
 from typing import Optional
 from uuid import UUID
-from pydantic import BaseModel, Field
-from uuid import UUID
 
-from app.models.users import User
+from pydantic import BaseModel, Field
+
+from app.api.v1.models.users import User
 
 
 class Tweet(BaseModel):
