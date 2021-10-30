@@ -43,6 +43,5 @@ class User(UserBase):
     password: str = Field(..., min_length=8, max_length=20)
 
 
-class UserCreated(UserBase):...
-
-
+class UserCreated(UserBase):
+    ...

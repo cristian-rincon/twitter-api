@@ -1,12 +1,22 @@
 from typing import Optional
 
-from fastapi import Body, Cookie, FastAPI, File, Header, Path, UploadFile, status
+from fastapi import (
+    Body,
+    Cookie,
+    FastAPI,
+    File,
+    Header,
+    HTTPException,
+    Path,
+    UploadFile,
+    status,
+)
 from fastapi.datastructures import UploadFile
 from fastapi.param_functions import Form
 from pydantic.networks import EmailStr
 
-from app.models.user import User, UserBase, UserCreated
 from app.models.auth import LoginResponse
+from app.models.user import User, UserBase, UserCreated
 
 app = FastAPI()
 
@@ -25,7 +35,35 @@ def create_user(user: User = Body(...)):
 def get_user(
     user_id: int = Path(..., gt=0, title="User ID", description="ID of the user")
 ):
-    return {"user_id": user_id}
+    mock_users = {
+        1: User(
+            id=1,
+            username="johndoe",
+            email="johndoe@example.com",
+            first_name="John",
+            last_name="Doe",
+            age=32,
+            hair_color="brown",
+            is_active=True,
+            is_superuser=False,
+            password="hunter21",
+        ),
+        2: User(
+            id=2,
+            username="janesmith",
+            email="janesmith@example.com",
+            first_name="Jane",
+            last_name="Smith",
+            age=30,
+            hair_color="black",
+            is_active=False,
+            is_superuser=False,
+            password="abcdefga",
+        ),
+    }
+    if user_id not in mock_users:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Userid not found")
+    return {"data": mock_users[user_id]}
 
 
 @app.put("/user/{user_id}", status_code=status.HTTP_200_OK)
@@ -68,5 +106,5 @@ def post_image(
     return {
         "filename": image.filename,
         "format": image.content_type,
-        "size-kb": round(len(image.file.read())/1024, 2),
+        "size-kb": round(len(image.file.read()) / 1024, 2),
     }

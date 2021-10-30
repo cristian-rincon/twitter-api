@@ -1,7 +1,6 @@
 from pydantic import BaseModel, Field
 
 
-
 class LoginResponse(BaseModel):
     username: str = Field(
         ...,
