@@ -23,7 +23,12 @@ def home():
     return RedirectResponse("/docs")
 
 
-@app.post("/login", response_model=LoginResponse, status_code=status.HTTP_200_OK)
+@app.post(
+    "/login",
+    response_model=LoginResponse,
+    status_code=status.HTTP_200_OK,
+    deprecated=True,
+)
 def login(
     username: str = Form(...),
     password: str = Form(...),
@@ -34,7 +39,7 @@ def login(
 # Cookies & Headers
 
 
-@app.post("/contact", status_code=status.HTTP_200_OK)
+@app.post("/contact", status_code=status.HTTP_200_OK, deprecated=True)
 def contact(
     name: str = Form(..., min_length=3, max_length=20),
     email: EmailStr = Form(...),
@@ -46,7 +51,7 @@ def contact(
 
 
 # Files & Uploads
-@app.post("/post-image")
+@app.post("/post-image", deprecated=True)
 def post_image(
     image: UploadFile = File(...),
 ):
