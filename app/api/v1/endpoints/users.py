@@ -47,7 +47,10 @@ def login(user: User = Body(...)):
     summary="List of users",
 )
 def get_users():
-    ...
+    """List all users"""
+    with open("app/mocks/users.json", "r+", encoding="utf-8") as f:
+        return json.loads(f.read())
+
 
 
 @router.get(
