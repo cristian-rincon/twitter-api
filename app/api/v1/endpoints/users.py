@@ -5,7 +5,7 @@ from fastapi import APIRouter, Body, HTTPException, Path
 from starlette import status
 
 from app.api.v1.models.users import User, UserBase, UserRegister
-
+from app.utils import load_json
 router = APIRouter(
     prefix="/users", tags=["users"], responses={404: {"description": "Not found"}}
 )
@@ -48,8 +48,7 @@ def login(user: User = Body(...)):
 )
 def get_users():
     """List all users"""
-    with open("app/mocks/users.json", "r+", encoding="utf-8") as f:
-        return json.loads(f.read())
+    return load_json("app/mocks/users.json")
 
 
 
